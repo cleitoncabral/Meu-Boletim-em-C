@@ -121,7 +121,23 @@ void inserir_faltas(aluno dados_alunos[3], char nome_materia[13][25]){
     }
 
 }
-
+void testando_aprovacao (aluno dados_alunos[3],char nome_materia[13][25], int pos){
+     int aprovado[13],i,j, perdida,contador=0,k;
+      i=pos;
+        for (j=0; j<13; j++){
+        aprovado[j]= (dados_alunos[i].faltas[j]*100)/60;
+        }
+        printf("\nAS MATERIAS DE REPROVAÇÃOS POR FALTA SÃO:");
+        for (j=0; j<13; j++){
+        if (aprovado[j]>25){
+            printf("\n%s",nome_materia[j]);
+            contador++;
+        }
+        }
+        if (contador==0){
+            printf("\nVOCÊ NÃO REPROVOU EM NENHUMA POR FALTA!");
+        }
+        }
 //LOGAR E CONFERIR ALUNO
 int logar_aluno(aluno dados_alunos[3]){
 
@@ -217,6 +233,21 @@ void exibe_dados_alunos(aluno dados_alunos[], char nome_materia[13][25]){
         }
     }
 }
+void exibe_faltas(int pos,aluno dados_alunos[], char nome_materia[13][25]){
+    int i=pos,j,k;
+
+    printf("\n\nFALTAS              : %s",  dados_alunos[i].senha_aluno);
+
+    for(j = 0; j<13; j++){
+        printf("\n%s %i", nome_materia[j],dados_alunos[i].faltas[j]);
+    }
+}
+void exibe_faltas_especifica(int pos,aluno dados_alunos[], char nome_materia[13][25],int especifica){
+    int i=pos,j,k;
+
+        printf("\n%s %i", nome_materia[especifica-1],dados_alunos[i].faltas[especifica-1]);
+    }
+
 void exibe_dados_alunos_aluno(int pos,aluno dados_alunos[], char nome_materia[13][25]){
     int i=pos,j,k;
     printf("\nNOME                : %s",  dados_alunos[i].nome);
@@ -237,11 +268,11 @@ void exibe_dados_alunos_aluno(int pos,aluno dados_alunos[], char nome_materia[13
     for(j = 0; j<13; j++){
         printf("\n%s %i", nome_materia[j],dados_alunos[i].faltas[j]);
     }
-
+    testando_aprovacao ( dados_alunos, nome_materia,  pos);
 }
 void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_materia[13][25]){
 
-    int entrada_menu, pos,entrada_aluno,entrada_sec;
+    int entrada_menu, pos,entrada_aluno,entrada_sec,escolha,especifica;
 
     printf("\n\nESCOLHA UMA OPÇÃO :");
     printf("\n1 - LOGAR COMO ALUNO");
@@ -256,14 +287,25 @@ void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_mat
                 system("cls");
 
                 pos = logar_aluno(dados_alunos);
-                printf("\n1 - DESEJA VISUALIZAR SEUS DADOS? ( 1 = NAO, 1 = SIM");
+                printf("\n1 -  VISUALIZAR SEUS DADOS COMPLETOS: (0 = NAO, 1 = SIM)");
+                printf("\n 2- VISUALIZAR APENAS AS FALTAS NAS DISCIPLINAS:");
                 scanf("%i",&entrada_aluno);
-                if( entrada_aluno==1){
+                if(entrada_aluno==1){
                     exibe_dados_alunos_aluno(pos, dados_alunos, nome_materia);
-                }else{
-                    printf("PROGRAMA FINALIZADO");
                 }
-
+                    if(entrada_aluno==2){
+                        printf("1 - EM TODAS");
+                        printf("2 - ALGUMA ESPECÍFICA");
+                        scanf("%i", &escolha);
+                        if (escolha == 1)
+                     exibe_faltas(pos, dados_alunos,  nome_materia);
+                        if (escolha == 2){
+                            printf("SELECIONE O NUMERO REFERENTE A DISCIPLINA:");
+                            printf("\n1 - língua portuguesa\n2 - matemática, \n3 - biologia, \n4 - física\n5 - química\n6 - filosofia\n7 - inglês\n8 - geografia\n9 - história\n10 - sociologia\n11 - educação física\n12 - educação artística\n13 - literatura " );
+                            scanf("%i", &especifica);
+                            exibe_faltas_especifica(pos, dados_alunos,  nome_materia,especifica);
+                        }
+                }
                 break;
             case 2:
                 system("cls");
@@ -298,6 +340,7 @@ void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_mat
     }
 
 }
+
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
