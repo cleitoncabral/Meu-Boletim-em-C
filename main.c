@@ -22,13 +22,13 @@ typedef struct {
     } secretario;
 
 
-
+// FUNÇÃO PARA NOTAS
 void inserir_notas(aluno dados_alunos[3],char nome_materia[13][25]){
     int j,i,pos;
     char matricula_aluno[50];
     printf("\nDIGITE A MATRICULA :   ");
     scanf("%s",&matricula_aluno);
-    printf("\mat da entrada -%s- \n\n mat do struct : -%s-  ",matricula_aluno, dados_alunos[0].matricula);
+
 
     for(i = 0; i<3; i++){
         if(strcmp(matricula_aluno, dados_alunos[i].matricula) == 0){
@@ -44,6 +44,7 @@ void inserir_notas(aluno dados_alunos[3],char nome_materia[13][25]){
     }
     exibe_dados_alunos_aluno(pos, dados_alunos, nome_materia);
 }
+// FUNÇÃO PARA ALTERAR NOTAS
 void alterar_notas(aluno dados_alunos[3],char nome_materia[13][25]){
 
     int j,i,pos,materia_alterar;
@@ -51,7 +52,6 @@ void alterar_notas(aluno dados_alunos[3],char nome_materia[13][25]){
 
     printf("\nDIGITE A MATRICULA :   ");
     scanf("%s",&matricula_aluno);
-    printf("\mat da entrada -%s- \n\n mat do struct : -%s-  ",matricula_aluno, dados_alunos[0].matricula);
 
     for(i = 0; i<3; i++){
         if(strcmp(matricula_aluno, dados_alunos[i].matricula) == 0){
@@ -68,9 +68,9 @@ void alterar_notas(aluno dados_alunos[3],char nome_materia[13][25]){
 
     printf("\nQUAL A NOVA NOTA ?  ");
     scanf("%f",&dados_alunos[pos].media[materia_alterar]);
-
+    exibe_dados_alunos_aluno(pos, dados_alunos, nome_materia);
 }
-
+// FUNÇÃO PARA FALTAS
 void alterar_faltas(aluno dados_alunos[3],char nome_materia[13][25]){
 
     int j,i,pos,faltas_alterar;
@@ -78,7 +78,7 @@ void alterar_faltas(aluno dados_alunos[3],char nome_materia[13][25]){
 
     printf("\nDIGITE A MATRICULA :   ");
     scanf("%s",&faltas_alterar);
-    printf("\mat da entrada -%s- \n\n mat do struct : -%s-  ",matricula_aluno, dados_alunos[0].matricula);
+
 
     for(i = 0; i<3; i++){
         if(strcmp(matricula_aluno, dados_alunos[i].matricula) == 0){
@@ -97,10 +97,10 @@ void alterar_faltas(aluno dados_alunos[3],char nome_materia[13][25]){
 
     printf("\nQUAL A NOVA QUANTIA DE FALTAS ?  ");
     scanf("%f",&dados_alunos[pos].faltas[faltas_alterar]);
-
+    exibe_dados_alunos_aluno(pos, dados_alunos, nome_materia);
 }
 
-
+// FUNÇÃO PARA ALTERAR FALTAS
 void inserir_faltas(aluno dados_alunos[3], char nome_materia[13][25]){
     int j,i;
     float aux;
@@ -119,15 +119,16 @@ void inserir_faltas(aluno dados_alunos[3], char nome_materia[13][25]){
         printf("\n%s ", nome_materia[j]);
         scanf("%i",&dados_alunos[pos].faltas[j]);
     }
-
+    exibe_dados_alunos_aluno(pos, dados_alunos, nome_materia);
 }
+// FUNÇÃO PARA VER SE O ALUNO SERÁ APROVADO POR FALTAS
 void testando_aprovacao (aluno dados_alunos[3],char nome_materia[13][25], int pos){
      int aprovado[13],i,j, perdida,contador=0,k;
       i=pos;
         for (j=0; j<13; j++){
         aprovado[j]= (dados_alunos[i].faltas[j]*100)/60;
         }
-        printf("\nAS MATERIAS DE REPROVAÇÃOS POR FALTA SÃO:");
+        printf("\nAS MATERIAS DE REPROVAÇÃOS POR FALTA SÃO:\n");
         for (j=0; j<13; j++){
         if (aprovado[j]>25){
             printf("\n%s",nome_materia[j]);
@@ -164,8 +165,7 @@ int confere_aluno(aluno dados_alunos[3],char login_aluno[50], char senha_aluno[5
     for(i = 0; i<3; i++){
 
         if(strcmp(login_aluno, dados_alunos[i].login_aluno) == 0){
-            printf("\nlogin da entrada -%s- \n\n login do struct : -%s-  ",login_aluno, dados_alunos[i].login_aluno);
-            printf("\nsenha da entrada -%s- \n\n senha do struct : -%s-  ",senha_aluno, dados_alunos[i].senha_aluno);
+
             pos_aluno=i;
             printf("%entrou no if");
         }
@@ -195,22 +195,33 @@ void logar_secretario(aluno dados_secretario[3]){
 void confere_secretario(secretario dados_secretario[3], char login_secretario[50], char senha_secretario[50]){
 
     int i, pos_sec;
-    printf("\nlogin da entrada -%s- \n\n login do struct : -%s-  ",login_secretario, dados_secretario[0].login_func);
-    printf("\nsenha da entrada -%s- \n\n senha do struct : -%s-  ",senha_secretario, dados_secretario[0].senha_func);
 
     for(i = 0; i<2; i++){
         if(strcmp(login_secretario, dados_secretario[i].login_func) == 0){
             pos_sec=i;
         }
     }
-
     if(strcmp(senha_secretario, dados_secretario[pos_sec].senha_func) == 0){
         printf("LOGIN FEITO COM SUCESSO !");
     }else{
         logar_secretario(dados_secretario);
     }
 }
+void exibe_notas_especificas(aluno dados_alunos[], char nome_materia[13][25], int pos, int especifica){
+    int i,j;
+    i = pos;
+        printf("\n\n%s %.2f", nome_materia[especifica-1],dados_alunos[i].media[especifica-1]);
 
+}
+// FUNÇÃO PARA EXIBIR AS NOTAS
+void exibe_notas(aluno dados_alunos[], char nome_materia[13][25], int pos){
+    int i,j;
+    i = pos;
+    for(j = 0; j<13; j++){
+        printf("\n\n%s %.2f", nome_materia[j],dados_alunos[i].media[j]);
+        }
+}
+// FUNÇÃO PARA EXIBIR OS DADOS DOS ALUNOS
 void exibe_dados_alunos(aluno dados_alunos[], char nome_materia[13][25]){
 
     int i,j,k;
@@ -233,6 +244,7 @@ void exibe_dados_alunos(aluno dados_alunos[], char nome_materia[13][25]){
         }
     }
 }
+// FUNÇÃO PARA EXIBIR AS FALTAS DOS ALUNOS
 void exibe_faltas(int pos,aluno dados_alunos[], char nome_materia[13][25]){
     int i=pos,j,k;
 
@@ -247,7 +259,7 @@ void exibe_faltas_especifica(int pos,aluno dados_alunos[], char nome_materia[13]
 
         printf("\n%s %i", nome_materia[especifica-1],dados_alunos[i].faltas[especifica-1]);
     }
-
+// FUNÇÃO PARA EXIBIR OS DADOS DOS ALUNOS
 void exibe_dados_alunos_aluno(int pos,aluno dados_alunos[], char nome_materia[13][25]){
     int i=pos,j,k;
     printf("\nNOME                : %s",  dados_alunos[i].nome);
@@ -255,26 +267,34 @@ void exibe_dados_alunos_aluno(int pos,aluno dados_alunos[], char nome_materia[13
     printf("\nLOGIN               : %s",  dados_alunos[i].login_aluno);
     printf("\nSENHA               : %s",  dados_alunos[i].senha_aluno);
     printf("\nMEDIAS              : ");
+    printf("\n__________________________________________________________\n");
+    printf("\nDISCIPLINAS MATRICULADAS:\n");
     for(j = 0; j<13; j++){
-
-        printf("\n\n%s %.2f", nome_materia[j],dados_alunos[i].media[j]);
-
+        printf("\n%s %.2f", nome_materia[j],dados_alunos[i].media[j]);
+    }
+    printf("\n__________________________________________________________\n");
+    printf("\nDISCIPLINAS EM RECUPERAÇÃO POR NOTA BAIXA:\n");
+    for(j = 0; j<13; j++){
         if(dados_alunos[i].media[j]<7){
-            printf("\n\nEstá de recuperação em : %s",nome_materia[j]);
+            printf("\n%s",nome_materia[j]);
         }
     }
-    printf("\n\nFALTAS              : %s",  dados_alunos[i].senha_aluno);
+    printf("\n____________________________________________________________\n");
+    printf("\nFALTAS              : %s",  dados_alunos[i].senha_aluno);
 
     for(j = 0; j<13; j++){
         printf("\n%s %i", nome_materia[j],dados_alunos[i].faltas[j]);
     }
+    printf("\n____________________________________________________________\n");
     testando_aprovacao ( dados_alunos, nome_materia,  pos);
 }
+// FUNÇÃO MENU
 void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_materia[13][25]){
 
     int entrada_menu, pos,entrada_aluno,entrada_sec,escolha,especifica;
 
-    printf("\n\nESCOLHA UMA OPÇÃO :");
+    printf("SEJA BEM VINDO AO PORTAL\n");
+    printf("\nESCOLHA UMA OPÇÃO :");
     printf("\n1 - LOGAR COMO ALUNO");
     printf("\n2 - LOGAR COMO SECRETÁRIO");
     printf("\n3 - FINALIZAR PROGRAMA");
@@ -287,25 +307,48 @@ void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_mat
                 system("cls");
 
                 pos = logar_aluno(dados_alunos);
-                printf("\n1 -  VISUALIZAR SEUS DADOS COMPLETOS: (0 = NAO, 1 = SIM)");
-                printf("\n 2- VISUALIZAR APENAS AS FALTAS NAS DISCIPLINAS:");
+                printf("\n 1 - VISUALIZAR SEUS DADOS COMPLETOS: ");
+                printf("\n 2 - VISUALIZAR APENAS AS FALTAS NAS DISCIPLINAS:");
+                printf("\n 3 - VISUALIZAR APENAS AS NOTAS DAS DISCIPLINAS:");
+                printf("\nRESPOSTA: ");
                 scanf("%i",&entrada_aluno);
+                system("cls");
                 if(entrada_aluno==1){
                     exibe_dados_alunos_aluno(pos, dados_alunos, nome_materia);
                 }
-                    if(entrada_aluno==2){
-                        printf("1 - EM TODAS");
-                        printf("2 - ALGUMA ESPECÍFICA");
-                        scanf("%i", &escolha);
-                        if (escolha == 1)
-                     exibe_faltas(pos, dados_alunos,  nome_materia);
-                        if (escolha == 2){
-                            printf("SELECIONE O NUMERO REFERENTE A DISCIPLINA:");
-                            printf("\n1 - língua portuguesa\n2 - matemática, \n3 - biologia, \n4 - física\n5 - química\n6 - filosofia\n7 - inglês\n8 - geografia\n9 - história\n10 - sociologia\n11 - educação física\n12 - educação artística\n13 - literatura " );
-                            scanf("%i", &especifica);
-                            exibe_faltas_especifica(pos, dados_alunos,  nome_materia,especifica);
+                if(entrada_aluno==2){
+                    printf("1 - EM TODAS\n");
+                    printf("2 - ALGUMA ESPECÍFICA");
+                    printf("\nRESPOSTA: ");
+                    scanf("%i", &escolha);
+                    if (escolha == 1)
+                        exibe_faltas(pos, dados_alunos,  nome_materia);
+                    if (escolha == 2){
+                        printf("\nSELECIONE O NUMERO REFERENTE A DISCIPLINA:");
+                        printf("\n1 - LINGUA PORTUGUESA\n2 - MATEMÁTICA \n3 - BIOLOGIA \n4 - FÍSICA\n5 - QUÍMICA\n6 - FILOSOFIA\n7 - INGLÊS\n8 - GEOGRAFIA\n9 - HISTÓRIA\n10 - SOCIOLOGIA\n11 - EDUCAÇÃO FÍSICA\n12 - EDUCAÇÃO ARTISTICA\n13 - LITERATURA\n " );
+                        printf("\nRESPOSTA: ");
+                        scanf("%i", &especifica);
+                        exibe_faltas_especifica(pos, dados_alunos,  nome_materia,especifica);
                         }
                 }
+                if(entrada_aluno==3){
+                    printf("1 - EM TODAS\n");
+                    printf("2 - ALGUMA ESPECÍFICA\n");
+                    printf("RESPOSTA: ");
+                    scanf("%i", &escolha);
+                if (escolha == 1){
+                      exibe_notas(dados_alunos, nome_materia,pos);
+                }
+                }
+                if (escolha == 2){
+                    printf("SELECIONE O NUMERO REFERENTE A DISCIPLINA:");
+                    printf("\n1 - LINGUA PORTUGUESA\n2 - MATEMÁTICA, \n3 - BIOLOGIA \n4 - FÍSICA\n5 - QUÍMICA\n6 - FILOSOFIA\n7 - INGLÊS\n8 - GEOGRAFIA\n9 - HISTÓRIA\n10 - SOCIOLOGIA\n11 - EDUCAÇÃO FÍSICA\n12 - EDUCAÇÃO ARTISTICA\n13 - LITERATURA\n" );
+                    printf("\nRESPOSTA: ");
+                    scanf("%i", &especifica);
+                      exibe_notas_especificas(dados_alunos, nome_materia,pos,especifica);
+                }
+
+
                 break;
             case 2:
                 system("cls");
@@ -330,6 +373,7 @@ void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_mat
                     alterar_faltas(dados_alunos,nome_materia);
                 }
                 break;
+
         }
         printf("\n\nESCOLHA UMA OPÇÃO :");
         printf("\n1 - LOGAR COMO ALUNO");
@@ -337,8 +381,8 @@ void menu(aluno dados_alunos[3], secretario dados_funcionarios[2], char nome_mat
         printf("\n2 - FINALIZAR PROGRAMA");
         printf("\nRESPOSTA :   ");
         scanf("%i", &entrada_menu);
-    }
 
+}
 }
 
 int main()
@@ -377,17 +421,17 @@ int main()
                     result = fgets(Linha, 100, arq);//NOME
                     result[strlen(result)-1] = '\0';
                     sprintf(dados_alunos[i].nome, "%s", result);
-                    printf("\nNOME                : %s-",  dados_alunos[i].nome);
+
 
                     result = fgets(Linha, 100, arq);//MATRICULA
                     result[strlen(result)-1] = '\0';
                     sprintf(dados_alunos[i].matricula, "%s", result);
-                    printf("\nMATRICULA           : %s-",  dados_alunos[i].matricula);
+
 
                     result = fgets(Linha, 100, arq);//LOGIN
                     result[strlen(result)-1] = '\0';
                     sprintf(dados_alunos[i].login_aluno, "%s", result);
-                    printf("\nLOGIN               : %s-",  dados_alunos[i].login_aluno);
+
 
 
                     result = fgets(Linha, 100, arq);//SENHA
@@ -397,12 +441,12 @@ int main()
                         result[strlen(result)-1] = '\0';
                     }
                     sprintf(dados_alunos[i].senha_aluno, "%s", result);
-                    printf("\nSENHA               : %s-",  dados_alunos[i].senha_aluno);
+
                 }
             }
     }
     fclose(arq);
-    printf("\n\n-------------------------------------------------");
+
     arq1 = fopen("sec.txt", "r");             // LEITURA DO TXT DE SECRETÁRIOS
     while (!feof(arq1)){//SECRETARIO
         // LÊ UMA LINHA (INCLUSIVE COM O '\N')O 'FGETS'
@@ -412,12 +456,12 @@ int main()
                 result = fgets(Linha, 100, arq);//CODIGO
                 result[strlen(result)-1] = '\0';
                 sprintf(dados_funcionarios[i].codigo, "%s", result);
-                printf("\n\nCODIGO               : %s-",  dados_funcionarios[i].codigo);
+
 
                 result = fgets(Linha, 100, arq);//LOGIN
                 result[strlen(result)-1] = '\0';
                 sprintf(dados_funcionarios[i].login_func, "%s", result);
-                printf("\nLOGIN               : %s-",  dados_funcionarios[i].login_func);
+
 
                 result = fgets(Linha, 100, arq);//SENHA
                 if(i==1){
@@ -427,7 +471,7 @@ int main()
                 }
 
                 sprintf(dados_funcionarios[i].senha_func, "%s", result);
-                printf("\nSENHA               : %s-",  dados_funcionarios[i].senha_func);
+
             }
         }
     }
